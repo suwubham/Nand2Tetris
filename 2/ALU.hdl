@@ -42,4 +42,20 @@ CHIP ALU {
 
     PARTS:
     //// Replace this comment with your code.
+    Mux16(a=x, b=false, sel=zx, out=zerox); //x or zero
+    Not16(in=zerox, out=negx); // negate x
+    Mux16(a=zerox, b=negx, sel=nx, out=newx); //zerox or ngzerox
+
+    Mux16(a=y, b=false, sel=zy, out=zeroy); //y or zero
+    Not16(in=zeroy, out=negy); //negate y
+    Mux16(a=zeroy, b=negy, sel=ny, out=newy); //zeroy or ngzeroy
+
+    Add16(a=newx, b=newy, out=addxy);
+    And16(a=newx, b=newy, out=andxy);
+    Mux16(a=andxy, b=addxy, sel=f, out=addorand); // add or and {f}
+
+    Not16(in=addorand, out=naddorand);
+    Mux16(a=addorand, b=naddorand, sel=no, out=out); //negate addorand {no}
+
+    
 }
